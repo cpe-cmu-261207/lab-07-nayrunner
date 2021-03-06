@@ -11,16 +11,21 @@ const Post = () => {
     const {postId} = router.query
     const [post,setPost] = useState(null)
     const [comment,setComment] = useState([])
+    const [loading,setLoading] = useState(false)
     const fetchPost = async () => { 
+        setLoading(true)
         if(postId){
             const response = await axios.get(baseURL + "/post/" + postId, { headers: { "app-id": APP_ID }})
             const cmt = await axios.get(`${baseURL}/post/${postId}/comment`, { headers: { 'app-id': APP_ID } })
             setPost(response.data)
             setComment(cmt.data.data)
+            setLoading(false)
         }
     }
 
     useEffect(fetchPost,[postId])
+
+    if(loading) return<h1 style={{textAlign:"center"}}>LOADING</h1>
 
     return(
         <>
@@ -43,9 +48,11 @@ const Post = () => {
                 </center>
             ):null}
             <center>
+                <button>
                 <Link href="/post">
                     Back
                 </Link>
+                </button>
             </center>
         </>
     )

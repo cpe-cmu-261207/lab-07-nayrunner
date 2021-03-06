@@ -6,12 +6,17 @@ const APP_ID = '6012ee5f6a33f586a8ce53bd';
 
 const Posts = () => {
     const [posts,setPosts] = useState([])
+    const [loading,setLoading] = useState(false)
 
-    useEffect(() => {         
+    useEffect(() => {   
+        setLoading(true)      
         axios.get(baseURL+"/post", { headers: { "app-id": APP_ID }}).then((respond)=>{             
         console.log(respond)             
-        setPosts(respond.data.data)         
+        setPosts(respond.data.data)    
+        setLoading(false)    
     })},[] )
+
+    if(loading) return<h1 style={{textAlign:"center"}}>LOADING</h1>
 
     return (
         <>
